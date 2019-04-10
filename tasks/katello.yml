@@ -1,0 +1,71 @@
+- name: Checking subscription certificates
+  yum:
+    name: subscription-manager
+    state: present
+
+- name: Download {{ rhbase_kt_org_id }} Katello Certificates
+  yum:
+    name: "{{ rhbase_kt_certs}}"
+    state: present
+
+- name: Register system to Katello
+  redhat_subscription:
+    state: present
+    activationkey: "{{ rhbase_kt_activationkey }}"
+    org_id: "{{ rhbase_kt_org_id }}"
+  register: subscription 
+
+- block: 
+  - name: Remove default repositories
+    yum_repository:
+      name: "{{ item }}"
+      file: CentOS-Base
+      state: absent
+    with_items:
+      - base
+      - updates
+      - extras
+
+  - name: Remove external EPEL
+    yum_repository:
+      name: epel
+      file: epel
+      state: absent
+    notify: yum-clean-metadata  
+  when: subscription["msg"] == "System successfully registered*" or "System already registered."
+  
+- name: Verify Katello agent is installed
+  yum:
+    name: katello-agent
+    state: present
+
+- name: Enable Gofer
+  service:
+    name: goferd
+    enabled: true
+    state: started
+
+- name: Run yum updates
+  yum:
+    name: '*'
+    state: latest
+  when:  ansible_distribution == "RedHat" or "CentOS"  
+  register: updated
+
+- name: Reboot immediately if system was updated.
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: updated.changed 
+
+
+- name: Wait for the reboot to complete 
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: updated.changed
+
+
+    
