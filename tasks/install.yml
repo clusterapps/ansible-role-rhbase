@@ -26,6 +26,13 @@
   with_items: "{{ rhbase_systemd_services }}"
   tags: rhbase
 
+- name: Run Katello setup
+  include: katello.yml
+  tags:
+    - rhbase
+    - install
+  when: rhbase_kt_managed == "true" 
+
 - name: Install | Role/Ansible dependencies
   package:
     name: "{{ item }}"
