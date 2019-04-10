@@ -12,6 +12,10 @@ rhbase_repo_remove_dependencies: true
 rhbase_repo_exclude_from_update: []
 rhbase_repositories: []
 rhbase_update: false
+rhbase_kt_managed: false
+rhbase_kt_certs: http://katello.example.com.com/pub/katello-ca-consumer-latest.noarch.rpm
+rhbase_kt_activationkey: ActivationKey
+rhbase_kt_org_id: ORGNAME
 
 # Configuration
 rhbase_override_firewalld_zones: false
