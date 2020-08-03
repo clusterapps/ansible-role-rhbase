@@ -1,0 +1,14 @@
+# roles/rh-base/vars/RedHat.yml
+---
+rhbase_systemd_services:
+  - systemd-journald
+  - systemd-tmpfiles-setup-dev
+  - systemd-tmpfiles-setup
+
+rhbase_dependencies:
+  - python3-libselinux
+  - python3-policycoreutils
+  - firewalld
+
+rhbase_package_manager: dnf
+rhbase_package_manager_configuration: /etc/yum.conf
