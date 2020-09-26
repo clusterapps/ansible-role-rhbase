@@ -45,6 +45,7 @@ No specific requirements
 | `rhbase_update`                   | false           | When set, a package update will be performed.                                                                         |
 | `rhbase_user_groups`              | []              | List of user groups that should be present.                                                                           |
 | `rhbase_users`                    | []              | List of dicts specifying users that should be present. See below for an example.                                      |
+| `rhbase_taskrunner_key`           | []              | Authorized public key to connect as taskrunner
 
 **Remarks:**
 
@@ -123,11 +124,11 @@ Pull requests are also very welcome. The best way to submit a PR is by first cre
 BSD
 
 ## Contributors
-- [Michael Cleary](https://clusterapps.com)
+- [Michael Cleary](https://clusterapps.com) (maintainer)
 
 Original Contributors
 
-- Bert Van Vreckem (maintainer)
+- Bert Van Vreckem 
 - [Jeroen De Meerleer](https://github.com/JeroenED)
 - [Sebastien Nussbaum](https://github.com/SebaNuss)
 

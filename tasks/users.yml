@@ -2,7 +2,7 @@
 #
 # Create groups and users on the system
 ---
-- name: Users | Add groups
+- name: Users | Add user groups
   group:
     name: "{{ item }}"
     state: present
@@ -18,7 +18,7 @@
     comment: "{{ item.comment|default('') }}"
     shell: "{{ item.shell|default('/bin/bash') }}"
     groups: "{{ ','.join(item.groups) if item.groups is defined else '' }}"
-    password: "{{ item.password|default('!!') }}"
+    password: "{{ item.password|default(omit) }}"
   with_items: "{{ rhbase_users }}"
   tags:
     - rhbase

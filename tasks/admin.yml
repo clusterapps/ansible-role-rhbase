@@ -2,25 +2,42 @@
 #
 # Settings regarding the admin user
 ---
-- name: Admin | Make sure users from the wheel group can use sudo
+- name: Admin | Add task runners group
+  group:
+    name: "taskrunners"
+    state: present
+  tags:
+    - rhbase
+    - admin
+
+- name: Admin | Add task runner user
+  user:
+    name: taskrunner
+    state: present
+    comment: "Task Runner"
+    shell: "/bin/bash"
+    groups: "taskrunners"
+  tags:
+    - rhbase
+    - admin
+
+- name: Admin | Task Runners sudo
   lineinfile:
-    dest: /etc/sudoers.d/wheel
+    dest: /etc/sudoers.d/taskrunners
     state: present
     create: yes
-    regexp: '^%wheel'
-    line: '%wheel ALL=(ALL) ALL'
+    regexp: '^%taskrunners'
+    line: '%taskrunners ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
   tags:
     - rhbase
     - admin
 
-- name: Admin | Set attributes of sudo configuration file for wheel group
-  file:
-    path: /etc/sudoers.d/wheel
-    owner: root
-    group: root
-    mode: 0440
+- name: "Admin | Set up keys for Task Runner"
+  authorized_key:
+    user: taskrunner
+    key: "{{ rhbase_taskrunner_key }}"
+    exclusive: True
   tags:
     - rhbase
     - admin
-
