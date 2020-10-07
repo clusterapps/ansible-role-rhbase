@@ -1,4 +1,8 @@
 # Change log
+## 3.0.0
+
+All new updates for EL 8 systems.
+
 
 ## 2.3.1 - 2019-03-19
 
