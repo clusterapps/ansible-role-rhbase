@@ -1,12 +1,21 @@
 - name: Checking subscription certificates
-  yum:
+  package:
     name: subscription-manager
     state: present
 
-- name: Download {{ rhbase_kt_org_id }} Katello Certificates
-  yum:
+# - name: Download {{ rhbase_kt_org_id }} Katello Certificates
+#   get_url:
+#     url: 
+#     dest: /tmp/kt.rpm
+#     validate_certs: no
+
+- name:  Install certificate package
+  package:
     name: "{{ rhbase_kt_certs}}"
     state: present
+    validate_certs: no
+    disable_gpg_check: yes
+
 
 - name: Register system to Katello
   redhat_subscription:
@@ -16,15 +25,15 @@
   register: subscription 
 
 - block: 
-  - name: Remove default repositories
-    yum_repository:
-      name: "{{ item }}"
-      file: CentOS-Base
-      state: absent
-    with_items:
-      - base
-      - updates
-      - extras
+  # - name: Remove default repositories
+  #   yum_repository:
+  #     name: "{{ item }}"
+  #     file: CentOS-Base
+  #     state: absent
+  #   with_items:
+  #     - base
+  #     - updates
+  #     - extras
 
   - name: Remove external EPEL
     yum_repository:
@@ -34,19 +43,13 @@
     notify: yum-clean-metadata  
   when: subscription["msg"] == "System successfully registered*" or "System already registered."
   
-- name: Verify Katello agent is installed
-  yum:
-    name: katello-agent
+- name: Verify Katello host tools is installed
+  package:
+    name: katello-host-tools-tracer
     state: present
 
-- name: Enable Gofer
-  service:
-    name: goferd
-    enabled: true
-    state: started
-
-- name: Run yum updates
-  yum:
+- name: Run package updates
+  package:
     name: '*'
     state: latest
   when:  ansible_distribution == "RedHat" or "CentOS"  
