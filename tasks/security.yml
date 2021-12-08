@@ -20,11 +20,12 @@
     - rhbase
     - security
 
-- name: Security | Make sure the firewall is running
+- name: Security | Set firewalld
   service:
     name: firewalld
     state: started
     enabled: yes
+  when: rhbase_firewall_enabled == true 
   tags:
     - rhbase
     - security
@@ -37,6 +38,7 @@
   with_items:
     - dhcpv6-client
     - ssh
+  when: rhbase_firewall_enabled == true  
   notify:
     - restart firewalld
   tags:

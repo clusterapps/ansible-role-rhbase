@@ -73,14 +73,7 @@
     - rhbase
     - install
 
-- name: Install | Ensure specified packages are installed
-  package:
-    name: "{{ item }}"
-    state: installed
-  with_items: "{{ rhbase_install_packages }}"
-  tags:
-    - rhbase
-    - install
+
 
 - name: Install | Ensure specified packages are NOT installed
   package:
@@ -96,6 +89,15 @@
     name: '*'
     state: latest
   when: rhbase_update
+  tags:
+    - rhbase
+    - install
+
+- name: Install | Ensure specified packages are installed
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ rhbase_install_packages }}"
   tags:
     - rhbase
     - install

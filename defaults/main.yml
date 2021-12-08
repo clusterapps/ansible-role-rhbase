@@ -33,6 +33,7 @@ rhbase_firewall_allow_ports: []
 rhbase_firewall_interfaces: []
 rhbase_selinux_state: enforcing
 rhbase_selinux_booleans: []
+rhbase_firewall_enabled: true
 
 # Users
 rhbase_users: []
