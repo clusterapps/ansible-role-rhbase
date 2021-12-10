@@ -42,11 +42,6 @@
   #   notify: yum-clean-metadata  
   # when: subscription["msg"] == "System successfully registered*" or "System already registered."
   
-- name: Katello | Verify Katello host tools package is installed
-  package:
-    name: katello-host-tools-tracer
-    state: present
-
 - name: Katello | Run package updates
   package:
     name: '*'
