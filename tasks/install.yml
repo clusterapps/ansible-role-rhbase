@@ -1,24 +1,11 @@
-# roles/rhbase/tasks/install.yml
-#
-# Install custom repositories and packages. Repositories should be installed
-# using an RPM package. A list of URLs to the RPMs for these repositories
-# should be specified in group_vars or host_vars.
 ---
-- name: Install | Check minimal value of ‘rhbase_repo_installonly_limit’ (>= 2)
-  debug:
-    msg: "The value of ‘rhbase_repo_installonly_limit’ should be at least 2, actual value is {{ rhbase_repo_installonly_limit }}."
-  failed_when: rhbase_repo_installonly_limit < 2
-  tags:
-    - rhbase
-    - install
-
 - name: Install | Ensure the machine-ID is available
   command: systemd-machine-id-setup
   args:
     creates: /etc/machine-id
   tags: rhbase
 
-- name: Install | Ensure basic systemd services are running
+- name: Install | Ensure basic services are running
   service:
     name: "{{ item }}"
     state: started
@@ -26,7 +13,16 @@
   with_items: "{{ rhbase_systemd_services }}"
   tags: rhbase
 
-- name: Run Katello setup
+- name: Install | Ensure specified packages are NOT installed
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ rhbase_remove_packages }}"
+  tags:
+    - rhbase
+    - install
+
+- name: Install | Run Katello configuration
   include: katello.yml
   tags:
     - rhbase
@@ -73,22 +69,32 @@
     - rhbase
     - install
 
-
-
-- name: Install | Ensure specified packages are NOT installed
+- name: Install | Run package updates
   package:
-    name: "{{ item }}"
-    state: absent
-  with_items: "{{ rhbase_remove_packages }}"
+    name: '*'
+    state: latest
+  register: updated
+  when: rhbase_update
   tags:
     - rhbase
     - install
 
-- name: Install | Ensure all updates are installed
-  package:
-    name: '*'
-    state: latest
-  when: rhbase_update
+- name: Reboot if updated
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: updated.changed 
+  tags:
+    - rhbase
+    - install
+
+- name: Wait for the reboot to complete 
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: updated.changed
   tags:
     - rhbase
     - install

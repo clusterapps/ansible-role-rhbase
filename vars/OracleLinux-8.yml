@@ -14,5 +14,14 @@ rhbase_dependencies:
   - rsync
   - rsyslog
 
+rhbase_remove_packages:
+  - golang-github-prometheus-node-exporter
+  - rhn-client-tools
+  - rhn-setup
+
+rhbase_repo_exclude_from_update:
+  - rhn-client-tools
+  - rhn-setup
+
 rhbase_package_manager: dnf
 rhbase_package_manager_configuration: /etc/yum.conf

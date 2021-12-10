@@ -1,4 +1,3 @@
-# roles/rh-base/handlers/main.yml
 ---
 
 - name: restart journald

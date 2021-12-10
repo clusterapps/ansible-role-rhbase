@@ -1,5 +1,3 @@
-# rhbase/tasks/services.yml
-# Make sure the necessary services are enabled
 ---
 - name: Services | Ensure SSH daemon is running
   service:

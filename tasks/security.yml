@@ -1,8 +1,5 @@
-# roles/rhbase/tasks/security.yml
-#
-# Basic security settings
 ---
-- name: Security | Make sure SELinux is Enforcing
+- name: Security | Set SELinux
   selinux:
     policy: targeted
     state: "{{ rhbase_selinux_state }}"
@@ -45,7 +42,7 @@
     - rhbase
     - security
 
-- name: Security | Make sure user specified services can pass through firewall
+- name: Security | Configure firewall services for services
   firewalld:
     service: "{{ item }}"
     permanent: true
@@ -57,7 +54,7 @@
     - rhbase
     - security
 
-- name: Security | Make sure user specified ports can pass through firewall
+- name: Security | Configure firewall ports for services
   firewalld:
     port: "{{ item }}"
     permanent: true
@@ -68,6 +65,7 @@
   tags:
     - rhbase
     - security
+    
 - name: Security | Make sure specified interfaces are added
   firewalld:
     interface: "{{ item }}"

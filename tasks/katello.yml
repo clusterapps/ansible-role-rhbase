@@ -1,31 +1,30 @@
-- name: Checking subscription certificates
+- name: Katello | Add local repository
+  yum_repository:
+    name: local-8
+    description: Local EL 8 RPMs
+    baseurl: http://archives.home.manor.one/linux/rpm/8/
+
+- name: Katello | Checking subscription certificates
   package:
     name: subscription-manager
     state: present
 
-# - name: Download {{ rhbase_kt_org_id }} Katello Certificates
-#   get_url:
-#     url: 
-#     dest: /tmp/kt.rpm
-#     validate_certs: no
-
-- name:  Install certificate package
+- name: Katello | Install certificate package
   package:
     name: "{{ rhbase_kt_certs}}"
     state: present
     validate_certs: no
     disable_gpg_check: yes
 
-
-- name: Register system to Katello
+- name: Katello | Register system to Katello
   redhat_subscription:
     state: present
     activationkey: "{{ rhbase_kt_activationkey }}"
     org_id: "{{ rhbase_kt_org_id }}"
   register: subscription 
 
-- block: 
-  # - name: Remove default repositories
+#- block: 
+  # - name: Katello | Remove default repositories
   #   yum_repository:
   #     name: "{{ item }}"
   #     file: CentOS-Base
@@ -35,40 +34,35 @@
   #     - updates
   #     - extras
 
-  - name: Remove external EPEL
-    yum_repository:
-      name: epel
-      file: epel
-      state: absent
-    notify: yum-clean-metadata  
-  when: subscription["msg"] == "System successfully registered*" or "System already registered."
+  # - name: Katello | Remove external EPEL
+  #   yum_repository:
+  #     name: epel
+  #     file: epel
+  #     state: absent
+  #   notify: yum-clean-metadata  
+  # when: subscription["msg"] == "System successfully registered*" or "System already registered."
   
-- name: Verify Katello host tools is installed
+- name: Katello | Verify Katello host tools package is installed
   package:
     name: katello-host-tools-tracer
     state: present
 
-- name: Run package updates
+- name: Katello | Run package updates
   package:
     name: '*'
     state: latest
-  when:  ansible_distribution == "RedHat" or "CentOS"  
   register: updated
 
-- name: Reboot immediately if system was updated.
+- name: Katello | Reboot immediately if system was updated.
   shell: "sleep 5 && reboot"
   async: 1
   poll: 0
   when: updated.changed 
 
-
-- name: Wait for the reboot to complete 
+- name: Katello | Wait for the reboot to complete 
   wait_for_connection:
     connect_timeout: 20
     sleep: 5
     delay: 5
     timeout: 300
   when: updated.changed
-
-
-    
