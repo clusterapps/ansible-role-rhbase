@@ -3,6 +3,11 @@
     name: local-8
     description: Local EL 8 RPMs
     baseurl: http://archives.home.manor.one/linux/rpm/8/
+    gpgcheck: no
+
+
+- name: Katello | Clean yum/dnf cache
+  command: yum clean all
 
 - name: Katello | Checking subscription certificates
   package:
