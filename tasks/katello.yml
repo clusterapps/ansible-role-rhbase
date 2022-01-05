@@ -2,7 +2,7 @@
   yum_repository:
     name: local-8
     description: Local EL 8 RPMs
-    baseurl: http://archives.home.manor.one/linux/rpm/8/
+    baseurl: "{{ rhbase_kt_localrepo }}"
     gpgcheck: no
 
 
