@@ -4,6 +4,7 @@
     description: Local EL 8 RPMs
     baseurl: "{{ rhbase_kt_localrepo }}"
     gpgcheck: no
+  when: rhbase_kt_localrepo is defined  
 
 
 - name: Katello | Clean yum/dnf cache

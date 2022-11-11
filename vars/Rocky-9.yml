@@ -1,0 +1,18 @@
+---
+rhbase_systemd_services:
+  - systemd-journald
+  - systemd-tmpfiles-setup-dev
+  - systemd-tmpfiles-setup
+
+rhbase_dependencies:
+  - python3-libselinux
+  - python3-policycoreutils
+  - firewalld
+  - tmux
+  - net-tools
+  - tcpdump 
+  - rsync
+  - rsyslog
+
+rhbase_package_manager: dnf
+rhbase_package_manager_configuration: /etc/yum.conf
