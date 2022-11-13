@@ -13,7 +13,8 @@ rhbase_dependencies:
   - tcpdump 
   - rsync
   - rsyslog
-
+  - bash-completion
+  
 rhbase_remove_packages:
   - golang-github-prometheus-node-exporter
   - rhn-client-tools

@@ -14,7 +14,8 @@ rhbase_dependencies:
   - net-tools
   - tcpdump 
   - rsync
-  - rsyslog 
+  - rsyslog
+  - bash-completion  
   
 
 rhbase_package_manager: yum

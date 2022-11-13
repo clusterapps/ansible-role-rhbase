@@ -29,24 +29,18 @@
     org_id: "{{ rhbase_kt_org_id }}"
   register: subscription 
 
-#- block: 
-  # - name: Katello | Remove default repositories
-  #   yum_repository:
-  #     name: "{{ item }}"
-  #     file: CentOS-Base
-  #     state: absent
-  #   with_items:
-  #     - base
-  #     - updates
-  #     - extras
-
-  # - name: Katello | Remove external EPEL
-  #   yum_repository:
-  #     name: epel
-  #     file: epel
-  #     state: absent
-  #   notify: yum-clean-metadata  
-  # when: subscription["msg"] == "System successfully registered*" or "System already registered."
+- block: 
+  - name: Katello | Remove default repositories
+    yum_repository:
+      name: "{{ item }}"
+      file: CentOS-Base
+      state: absent
+    with_items:
+      - "{{ rhbase_defaultrepos}}"
+       
+  when: 
+    - subscription["msg"] == "System successfully registered*" or "System already registered."
+    - rhbase_defaultrepos is defined
   
 - name: Katello | Run package updates
   package:

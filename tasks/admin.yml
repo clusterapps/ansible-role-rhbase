@@ -34,7 +34,6 @@
   authorized_key:
     user: taskrunner
     key: "{{ rhbase_taskrunner_key }}"
-    exclusive: True
   when: rhbase_taskrunner_key is defined  
   tags:
     - rhbase

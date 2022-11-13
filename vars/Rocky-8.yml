@@ -13,6 +13,13 @@ rhbase_dependencies:
   - tcpdump 
   - rsync
   - rsyslog
+  - bash-completion
 
 rhbase_package_manager: dnf
 rhbase_package_manager_configuration: /etc/yum.conf
+
+rhbase_defaultrepos:
+  - base
+  - updates
+  - extras
+
