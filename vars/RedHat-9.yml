@@ -13,11 +13,7 @@ rhbase_dependencies:
   - tcpdump 
   - rsync
   - rsyslog
-  - bash-completion
-  - NetworkManager-libnm
-  - nm-connection-editor  
-
-rhbase_defaultrepofiles: []
+  - bash-completion  
 
 
 rhbase_package_manager: dnf

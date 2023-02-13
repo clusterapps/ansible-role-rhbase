@@ -90,10 +90,10 @@
 
 - name: Wait for the reboot to complete 
   wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
+    connect_timeout: 30
+    sleep: 30
     delay: 5
-    timeout: 300
+    timeout: 600
   when: updated.changed
   tags:
     - rhbase

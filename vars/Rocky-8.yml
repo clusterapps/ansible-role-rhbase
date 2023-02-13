@@ -14,10 +14,12 @@ rhbase_dependencies:
   - rsync
   - rsyslog
   - bash-completion
-
+  - NetworkManager-libnm
+  - nm-connection-editor
 rhbase_package_manager: dnf
 rhbase_package_manager_configuration: /etc/yum.conf
-
+rhbase_defaultrepofiles:
+  - rocky
 rhbase_defaultrepos:
   - base
   - updates

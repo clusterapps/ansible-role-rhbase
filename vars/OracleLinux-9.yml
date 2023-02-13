@@ -15,6 +15,7 @@ rhbase_dependencies:
   - rsyslog
   - bash-completion
   - NetworkManager-libnm
+  - NetworkManager-config-server
   - nm-connection-editor  
 
 rhbase_defaultrepofiles: []

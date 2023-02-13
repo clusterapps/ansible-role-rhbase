@@ -10,6 +10,12 @@
 - name: Katello | Clean yum/dnf cache
   command: yum clean all
 
+- name: Katello | Remove RHN/Spacewalk/Oracle Linux Manager
+  package:
+    name: "{{ rhbase_rhn_packages }}"
+    state: absent
+  when: ansible_distribution == "OracleLinux"
+
 - name: Katello | Checking subscription certificates
   package:
     name: subscription-manager
@@ -33,10 +39,10 @@
   - name: Katello | Remove default repositories
     yum_repository:
       name: "{{ item }}"
-      file: CentOS-Base
+      file: "{{ rhbase_defaultrepofiles }}"
       state: absent
     with_items:
-      - "{{ rhbase_defaultrepos}}"
+      - "{{ rhbase_defaultrepos }}"
        
   when: 
     - subscription["msg"] == "System successfully registered*" or "System already registered."

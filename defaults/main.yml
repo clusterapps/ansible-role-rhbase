@@ -16,6 +16,17 @@ rhbase_kt_managed: false
 rhbase_kt_certs: http://katello.example.com.com/pub/katello-ca-consumer-latest.noarch.rpm
 rhbase_kt_activationkey: ActivationKey
 rhbase_kt_org_id: ORGNAME
+rhbase_rhn_packages:
+  - osad
+  - python3-osad
+  - python3-rhnlib
+  - python3-spacewalk-usix
+  - rhn-client-tools
+  - rhn-check
+  - rhn-setup
+  - rhnsd
+  - dnf-plugin-spacewalk
+  - oracle-linux-manager-client-release-el8
 
 # Configuration
 rhbase_override_firewalld_zones: false
